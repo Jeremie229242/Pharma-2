@@ -55,6 +55,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'otp' => $otp,
             'otp_expires_at' => Carbon::now()->addMinutes(10),
+            'otp_sent_at' => now(),
             'is_verified' => false,
             'image' => $imagePath,
         ]);

@@ -25,7 +25,7 @@ class AvatarHelper
 
         // Ajouter les initiales
         $img->text($initials, $width/2, $height/2, function($font) {
-            $font->size(40);
+            $font->size(50);
             $font->color('#ffffff');
             $font->align('center');
             $font->valign('middle');

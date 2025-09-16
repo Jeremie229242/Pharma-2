@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('image')->nullable();
             $table->string('otp')->nullable();
-            $table->dateTime('otp_expires_at')->nullable();
+            $table->timestamp('otp_expires_at')->nullable();
+            $table->timestamp('otp_sent_at')->nullable();
+
             $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();

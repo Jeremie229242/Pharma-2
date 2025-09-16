@@ -40,7 +40,7 @@ class OtpController extends Controller
         ]);
     }
 
-    
+
         if ($user->otp === $request->otp && now()->lt($user->otp_expires_at)) {
             $user->is_verified = true;
             $user->otp = null;
@@ -68,7 +68,10 @@ class OtpController extends Controller
 
     // 🔒 Vérification délai avant renvoi d’un nouvel OTP (ex: 2 minutes)
 
-    if ($user->otp_expires_at && $user->otp_expires_at->gt(now()->subMinutes(2))) {
+
+
+    if ($user->otp_sent_at && $user->otp_sent_at->gt(now()->subMinutes(2))) {
+
         return back()->withErrors(['otp' => 'Veuillez patienter avant de demander un nouvel OTP.']);
     }
 
@@ -80,10 +83,11 @@ class OtpController extends Controller
     $otp = rand(100000, 999999);
     $user->otp = $otp;
     $user->otp_expires_at = now()->addMinutes(10);
+    $user->otp_sent_at = now();
     $user->save();
 
     // Envoyer mail
-    //Mail::to($user->email)->send(new \App\Mail\OtpMail($otp));
+
     Mail::to($user->email)->send(new OtpMail($otp));
 
     return back()->with('success', 'Un nouveau code OTP vous a été envoyé.');

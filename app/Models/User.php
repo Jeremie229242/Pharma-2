@@ -17,6 +17,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+
+
     protected $fillable = [
         'name',
         'email',
@@ -25,6 +28,7 @@ class User extends Authenticatable
         'otp_expires_at',
         'is_verified',
         'image',
+        'otp_sent_at'
     ];
 
     /**
@@ -44,5 +48,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+'otp_expires_at' => 'datetime',
+    'otp_sent_at' => 'datetime',
     ];
 }
