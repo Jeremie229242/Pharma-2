@@ -30,6 +30,22 @@ un projet pour l'&authentification + verification opt + verification de session 
 
  - Le compte est supprimé de la base pour éviter les utilisateurs “fantômes”.
 
+
+ 3- Renvoi OTP avec limitation (anti-spam)
+
+  - Un utilisateur peut redemander un code OTP.
+
+ - Pour éviter le spam, on vérifie un délai d’attente (ex. 2 minutes) avant d’envoyer un nouveau code.
+
+ 4- Avatar automatique
+
+ - Si l’utilisateur ne télécharge pas de photo lors de l’inscription :
+
+ - Un avatar est généré automatiquement avec la première lettre de chaque mot de son nom.
+
+ - Fond coloré aléatoire.
+
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
