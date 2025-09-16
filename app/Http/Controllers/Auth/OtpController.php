@@ -31,6 +31,16 @@ class OtpController extends Controller
             return back()->withErrors(['email' => 'Utilisateur introuvable']);
         }
 
+
+         // Si OTP expiré et jamais vérifié
+    if (!$user->is_verified && $user->otp_expires_at && now()->gt($user->otp_expires_at)) {
+        $user->delete(); // supprime l’utilisateur de la base
+        return redirect()->route('register')->withErrors([
+            'email' => 'Votre code OTP a expiré. Veuillez vous réinscrire.'
+        ]);
+    }
+
+    
         if ($user->otp === $request->otp && now()->lt($user->otp_expires_at)) {
             $user->is_verified = true;
             $user->otp = null;
@@ -57,7 +67,7 @@ class OtpController extends Controller
     $user = User::where('email', $request->email)->first();
 
     // 🔒 Vérification délai avant renvoi d’un nouvel OTP (ex: 2 minutes)
-    
+
     if ($user->otp_expires_at && $user->otp_expires_at->gt(now()->subMinutes(2))) {
         return back()->withErrors(['otp' => 'Veuillez patienter avant de demander un nouvel OTP.']);
     }

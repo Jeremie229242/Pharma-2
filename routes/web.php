@@ -23,8 +23,17 @@ Route::get('/', function () {
 
 
 Route::get('/verify-otp', [OtpController::class, 'showForm'])->name('otp.form');
+
+Route::get('/verify-otp/{email}', function($email) {
+    return view('auth.verify-otp', ['email' => $email]);
+})->name('otp.form');
+
 Route::post('/verify-otp', [OtpController::class, 'verify'])->name('otp.verify');
+
+
 Route::post('/resend-otp', [OtpController::class, 'resend'])->name('otp.resend');
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

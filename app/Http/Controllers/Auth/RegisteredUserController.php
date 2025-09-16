@@ -15,6 +15,7 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OtpMail;
 use Carbon\Carbon;
+use App\Helpers\AvatarHelper;
 
 class RegisteredUserController extends Controller
 {
@@ -37,8 +38,14 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'image' => 'nullable|image|max:2048',
         ]);
 
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('avatars','public');
+        } else {
+            $imagePath = AvatarHelper::generate($request->name);
+        }
         // Générer OTP
         $otp = rand(100000, 999999);
 
@@ -49,12 +56,14 @@ class RegisteredUserController extends Controller
             'otp' => $otp,
             'otp_expires_at' => Carbon::now()->addMinutes(10),
             'is_verified' => false,
+            'image' => $imagePath,
         ]);
 
         // envoyer l’OTP
         Mail::to($user->email)->send(new OtpMail($otp));
 
         // pas d’Auth::login($user) tant que pas vérifié
-        return redirect()->route('otp.form')->with('email', $user->email);
+        return redirect()->route('otp.form', ['email' => $user->email]);
+
     }
 }

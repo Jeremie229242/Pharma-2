@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="stylesheet" href="{{asset('css/app.css')}}">
 
 
     </head>
@@ -42,5 +42,6 @@
             'userId' => auth()->check() ? auth()->id() : null,
         ]) !!};
     </script>
+      <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
