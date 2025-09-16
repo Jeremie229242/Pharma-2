@@ -6,15 +6,29 @@ un projet pour l'&authentification + verification opt + verification de session 
 
 # Fonctionalite
 
-Inscription avec OTP obligatoire
+ 1-Inscription avec OTP obligatoire
 
--Lors de l’inscription (register), un OTP à 6 chiffres est généré et stocké en base.
+- Lors de l’inscription (register), un OTP à 6 chiffres est généré et stocké en base.
 
--L’utilisateur ne peut pas se connecter tant que l’OTP n’est pas validé.
+- L’utilisateur ne peut pas se connecter tant que l’OTP n’est pas validé.
 
--L’OTP a une durée de validité (otp_expires_at, ex. 10 minutes).
+- L’OTP a une durée de validité (otp_expires_at, ex. 10 minutes).
 
--Un email est envoyé automatiquement avec ce code.
+- Un email est envoyé automatiquement avec ce code.
+
+
+
+2- Vérification OTP
+
+ - L’utilisateur entre son code reçu par mail.
+
+ - Si le code est correct et valide 
+
+ - L’utilisateur est connecté automatiquement et redirigé vers son dashboard.
+
+ - Si l’OTP est expiré et que l’utilisateur n’a jamais validé →
+
+ - Le compte est supprimé de la base pour éviter les utilisateurs “fantômes”.
 
 ## License
 
