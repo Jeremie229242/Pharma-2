@@ -81,6 +81,46 @@
     </select>
                         </div>
                       </div>
+
+
+                      <div class="w-full lg:w-6/12 px-4">
+                        <div class="relative w-full mb-3">
+                          <label
+                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                          >
+                            Addresse de la pharmacie
+                          </label>
+                          <input
+                            type="text"
+                            name="adresse"
+                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+
+                            value="{{ $pharmacie->adresse }}"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div class="w-full lg:w-6/12 px-4">
+                        <div class="relative w-full mb-3">
+                          <label
+                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                          >
+                            Nom de la Commune
+                          </label>
+                          <input
+                            type="number"
+                            name="telephone"
+                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+
+                            value="{{ $pharmacie->telephone }}"
+                            required
+                          />
+                        </div>
+                      </div>
+
+
                     </div>
 
                     <hr class="mt-6 border-b-1 border-blueGray-300" />

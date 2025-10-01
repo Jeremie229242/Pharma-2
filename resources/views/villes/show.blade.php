@@ -42,8 +42,6 @@
                 >
                   <div class="py-6 px-3 mt-32 sm:mt-0">
 
-
-
                   </div>
                 </div>
                 <div class="w-full lg:w-4/12 px-4 lg:order-1">
@@ -117,4 +115,3 @@ href="{{ route('villes.edit', $ville) }}"
 
 
 
-      

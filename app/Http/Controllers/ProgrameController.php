@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Commune;
+use App\Models\Info;
 use App\Models\Pharmacie;
 use App\Models\Programe;
 use Illuminate\Http\Request;
@@ -159,7 +160,7 @@ public function par()
 public function search(Request $request)
 {
     $villeId = auth()->user()->ville_id;
-
+    $info = Info::where('ville_id', $villeId)->first();
     $query = Programe::with(['pharmacies.commune'])
         ->whereHas('commune', function($q) use ($villeId) {
             $q->where('ville_id', $villeId);
@@ -174,7 +175,7 @@ public function search(Request $request)
 
     $programmes = $query->get();
 
-    return view('programmes.search', compact('programmes'));
+    return view('programmes.search', compact('programmes','info'));
 }
 
 
