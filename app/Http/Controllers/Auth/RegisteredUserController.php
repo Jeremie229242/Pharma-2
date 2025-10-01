@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OtpMail;
 use Carbon\Carbon;
 use App\Helpers\AvatarHelper;
+use App\Models\Ville;
 
 class RegisteredUserController extends Controller
 {
@@ -24,7 +25,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $villes = Ville::all();
+        return view('auth.register', compact('villes'));
     }
 
     /**
@@ -46,6 +48,7 @@ class RegisteredUserController extends Controller
         } else {
             $imagePath = AvatarHelper::generate($request->name);
         }
+
         // Générer OTP
         $otp = rand(100000, 999999);
 
@@ -58,6 +61,7 @@ class RegisteredUserController extends Controller
             'otp_sent_at' => now(),
             'is_verified' => false,
             'image' => $imagePath,
+            'ville_id' => $request->ville_id,
         ]);
 
         // envoyer l’OTP

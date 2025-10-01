@@ -17,19 +17,30 @@ class AvatarHelper
         }
 
         // Couleur de fond aléatoire (ou fixe)
-        $colors = ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#e74c3c', '#34495e'];
+        $colors = ['#1abc9c', '#3498db', '#9b59b6', '#e67e22', '#e74c3c', '#34495e','#25C9DA'];
         $bgColor = $colors[array_rand($colors)];
 
         // Créer l’image
         $img = Image::canvas($width, $height, $bgColor);
 
         // Ajouter les initiales
-        $img->text($initials, $width/2, $height/2, function($font) {
-            $font->size(50);
-            $font->color('#ffffff');
-            $font->align('center');
-            $font->valign('middle');
-        });
+       // Dessiner un cercle plein au centre
+$img->circle(
+    min($width, $height),  // diamètre
+    $width / 2,            // centre X
+    $height / 2,           // centre Y
+    function ($draw) use ($bgColor) {
+        $draw->background($bgColor);
+    }
+);
+
+// Ajouter les initiales
+$img->text($initials, $width/2, $height/2, function($font) {
+    $font->size(80);
+    $font->color('#ffffff');
+    $font->align('center');
+    $font->valign('middle');
+});
 
         if (!file_exists(public_path('avatars'))) {
             mkdir(public_path('avatars'), 0775, true);

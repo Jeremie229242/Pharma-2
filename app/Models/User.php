@@ -28,7 +28,8 @@ class User extends Authenticatable
         'otp_expires_at',
         'is_verified',
         'image',
-        'otp_sent_at'
+        'otp_sent_at',
+        'ville_id'
     ];
 
     /**
@@ -51,4 +52,10 @@ class User extends Authenticatable
 'otp_expires_at' => 'datetime',
     'otp_sent_at' => 'datetime',
     ];
+
+    public function ville()
+{
+    return $this->belongsTo(Ville::class);
+}
+
 }

@@ -50,7 +50,9 @@ class OtpController extends Controller
             // connecter automatiquement
             Auth::login($user);
 
-            return redirect()->route('dashboard')->with('success', 'Compte vérifié avec succès !');
+            return redirect()->route('apres.ville', ['ville' => $user->ville_id])->with('success', 'Compte vérifié avec succès !');
+          // return view('ville', $user->ville_id)->with('success', 'Compte vérifié avec succès !');
+
         }
 
         return back()->withErrors(['otp' => 'Code invalide ou expiré.']);

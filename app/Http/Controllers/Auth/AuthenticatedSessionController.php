@@ -54,7 +54,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         // 🔹 Redirection selon la ville de l'utilisateur
-        return redirect()->route('dashboard', $user->ville_id);
+        return redirect()->intended(RouteServiceProvider::redirectTo($user));
     }
 
 
@@ -64,7 +64,7 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         DB::table('sessions')->where('user_id', Auth::id())->delete();
-        
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

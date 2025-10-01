@@ -1,29 +1,44 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
+@extends("layouts.appdash")
+@section('title','PRO-PHARMA | Villes')
+@section("content")
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+
+
+
+
+
+
+<div class="relative bg-emerald-500 md:pt-32 pb-32 pt-12">
+
+
+</div>
+
+<div class="px-4 md:px-10 mx-auto w-full -m-24">
+
+@include('profile.partials.update-profile-information-form')
+
+
+          <hr class="mt-6 border-b-1 border-blueGray-300" />
+
+          @include('profile.partials.update-password-form')
+
+
+          <hr class="mt-6 border-b-1 border-blueGray-300" />
+
+
+          
+
+
+
         </div>
-    </div>
-</x-app-layout>
+
+@endsection
+
+
+
+
+
+
+
