@@ -41,108 +41,46 @@
                     >
                       Programme Information
                     </h6>
+                    <input hidden class="form-control {{ $errors->has('user_id') ? 'is-invalid' : '' }}" type="text" name="user_id" id="user_id" value="{{ Auth()->id() }}">
+
                     <div class="flex flex-wrap">
                       <div class="w-full lg:w-12/12 px-4">
                         <div class="relative w-full mb-3">
                           <label
                             class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                           for="commune_id"
                           >
-                            Commune
-                          </label>
-                          <select
-                          name="commune_id"
-                          id="commune_id"
-                          class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                          required
-
-    >
-      <option value="">Choisir une commune</option>
-      @foreach($communes as $commune)
-                    <option
-
-                     value="{{ $commune->id }}">{{ $commune->name_commune }}</option>
-                @endforeach
-    </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="flex flex-wrap">
-                      <div class="w-full lg:w-12/12 px-4">
-                        <div class="relative w-full mb-3">
-                          <label
-                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                            htmlFor="grid-password"
-                          >
-                           Pharmacie
-                          </label>
-                          <select
-  name="pharmacies[]"
-  id="pharmacie_id"
-  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600
-         bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-  multiple
-  required
->
-  <option value="">-- Sélectionner les pharmacies --</option>
-</select>
-
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="flex flex-wrap">
-                      <div class="w-full lg:w-6/12 px-4">
-                        <div class="relative w-full mb-3">
-                          <label
-                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                            htmlFor="grid-password"
-                          >
-                           Date debut
+                           Nom
                           </label>
                           <input
-                            type="date"
-                           name="date_debut"
+                            type="text"
+                            name="name"
+                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+placeholder="Exemple OUI"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex flex-wrap">
+                      <div class="w-full lg:w-12/12 px-4">
+                        <div class="relative w-full mb-3">
+                          <label
+                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                          >
+                           Fichier
+                          </label>
+                          <input
+                            type="file"
+                            name="file"
                             class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
 
                             required
                           />
                         </div>
                       </div>
-
-                      <div class="w-full lg:w-6/12 px-4">
-                        <div class="relative w-full mb-3">
-                          <label
-                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                            htmlFor="grid-password"
-                          >
-                            Date Fin
-                          </label>
-                          <input
-                            type="date"
-                           name="date_fin"
-                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-
-                            required
-                          />
-                        </div>
-                      </div>
-
                     </div>
-                    <div>
-                <label class="inline-flex items-center cursor-pointer">
-                  <input
-                    id="customCheckLogin"
-                    type="checkbox"
-                    name="is_garde"
-                    value="1"
-                    class="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
-                  />
-                  <span class="ml-2 text-sm font-semibold text-blueGray-600">
-                  Pharmacie de garde ?
-                  </span>
-                </label>
-              </div>
+
 
                     <hr class="mt-6 border-b-1 border-blueGray-300" />
 

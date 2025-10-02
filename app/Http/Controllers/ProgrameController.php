@@ -68,24 +68,25 @@ public function par()
      */
     public function store(Request $request)
 {
+    $villeId = auth()->user()->ville_id;
     $validated = $request->validate([
-        'commune_id' => 'required|exists:communes,id',
-        'pharmacies' => 'required|array',
-        'pharmacies.*' => 'exists:pharmacies,id',
-        'date_debut' => 'required|date',
-        'date_fin' => 'required|date|after_or_equal:date_debut',
-        'is_garde' => 'nullable|boolean',
+        'name' => 'required|string',
+        'file' => 'nullable|file|mimes:pdf,jpg,png,doc,docx',
+
     ]);
 
-    $programme = Programe::create([
-        'commune_id' => $validated['commune_id'],
-        'date_debut' => $validated['date_debut'],
-        'date_fin' => $validated['date_fin'],
-        'is_garde' => $request->has('is_garde'),
-    ]);
+    if ($request->hasFile('file')) {
+        $path = $request->file('file')->store('uploads', 'public');
+        $validated['file_path'] = $path;
+    }
+// Associer la ville
+$validated['ville_id'] = $villeId;
+    $validated['user_id'] = auth()->id();
+    $grame = Programe::where('ville_id', $villeId)->first();
+   // Création de l’abonnement
+$grame = Programe::create($validated);
 
-    // Attacher les pharmacies sélectionnées
-    $programme->pharmacies()->attach($validated['pharmacies']);
+
 
     return redirect()->route('programmes.index')->with('success', 'Programme enregistré avec succès.');
 }

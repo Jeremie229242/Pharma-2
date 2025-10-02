@@ -4,22 +4,57 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Programe extends Model
 {
-    protected $fillable = ['commune_id','pharmacie_id', 'ville_id', 'date_debut', 'date_fin', 'is_garde'];
+    use HasFactory;
+    use SoftDeletes;
+    public $table = 'programes';
 
-    public function pharmacies()
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+
+    ];
+    protected $fillable = ['code','name', 'ville_id', 'user_id', 'file_path', 'is_publish'];
+
+    protected static function boot()
     {
-        return $this->belongsToMany(Pharmacie::class, 'programe_pharmacie');
+        parent::boot();
+
+        static::creating(function ($subs) {
+            $subs->code = self::generateCode();
+        });
+
+
     }
-    public function pharmacie()
+
+    public static function generateCode()
     {
-        return $this->belongsTo(Pharmacie::class);
+        // Récupérer le dernier code généré
+        $lastCode = DB::table('programes')->orderBy('id', 'desc')->value('code');
+
+        if ($lastCode) {
+            // Extraire le numéro de la fin du dernier code
+            $number = (int)substr($lastCode, -7);
+            $newNumber = str_pad($number + 1, 7, '0', STR_PAD_LEFT);
+        } else {
+            // Si aucun code n'existe encore
+            $newNumber = str_pad(1, 7, '0', STR_PAD_LEFT);
+        }
+
+        return 'PRO-PHARMA-' . $newNumber;
     }
-    public function commune()
+    public function user()
     {
-        return $this->belongsTo(Commune::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function ville()
+    {
+        return $this->belongsTo(Ville::class);
     }
 }
 
