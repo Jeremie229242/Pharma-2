@@ -11,6 +11,7 @@ class Programe extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    
     public $table = 'programes';
 
     protected $dates = [
@@ -19,7 +20,14 @@ class Programe extends Model
         'deleted_at',
 
     ];
-    protected $fillable = ['code','name', 'ville_id', 'user_id', 'file_path', 'is_publish'];
+    protected $fillable = [
+        'code',
+    'name',
+     'ville_id',
+      'user_id',
+      'file_path',
+       'is_publish'
+    ];
 
     protected static function boot()
     {

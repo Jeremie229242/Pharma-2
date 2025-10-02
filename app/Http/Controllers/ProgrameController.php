@@ -67,29 +67,30 @@ public function par()
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{
-    $villeId = auth()->user()->ville_id;
-    $validated = $request->validate([
-        'name' => 'required|string',
-        'file' => 'nullable|file|mimes:pdf,jpg,png,doc,docx',
+    {
 
-    ]);
 
-    if ($request->hasFile('file')) {
-        $path = $request->file('file')->store('uploads', 'public');
-        $validated['file_path'] = $path;
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'file' => 'required|file|mimes:pdf,doc,docx,png,jpg,jpeg', // adapte les formats
+        ]);
+
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('uploads', 'public');
+        }
+
+        Programe::create([
+            'code' => uniqid('PRO-PHARMA-'), // code auto généré
+            'name' => $request->name,
+            'file_path' => $filePath,
+            'is_publish' => false,
+            'user_id' => auth()->id(),
+        ]);
+        $validated['ville_id'] = auth()->user()->ville_id;
+        return redirect()->route('programmes.index')->with('success', 'Programme créé avec succès.');
     }
-// Associer la ville
-$validated['ville_id'] = $villeId;
-    $validated['user_id'] = auth()->id();
-    $grame = Programe::where('ville_id', $villeId)->first();
-   // Création de l’abonnement
-$grame = Programe::create($validated);
 
-
-
-    return redirect()->route('programmes.index')->with('success', 'Programme enregistré avec succès.');
-}
 
 
     /**

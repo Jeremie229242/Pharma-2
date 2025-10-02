@@ -24,8 +24,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        // table pivot programme_pharmacie
+       
 
     }
 

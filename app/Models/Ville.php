@@ -24,6 +24,10 @@ public function communes()
 {
     return $this->hasMany(Commune::class);
 }
+public function programmes()
+{
+    return $this->hasMany(Programe::class);
+}
 
 public function pharmacies()
 {
