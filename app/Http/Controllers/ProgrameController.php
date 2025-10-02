@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Commune;
 use App\Models\Info;
-use App\Models\Pharmacie;
+
 use App\Models\Programe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,9 +27,9 @@ class ProgrameController extends Controller
     $villeId = Auth::user()->ville_id;
 
     // Récupérer toutes les pharmacies des communes de la ville
-    $programmes = Programe::whereHas('commune', function ($query) use ($villeId) {
-        $query->where('ville_id', $villeId);
-    })->get();
+    $programmes = Programe::where('ville_id', $villeId)->get();
+    // Prendre seulement le premier enregistrement pour la ville
+
 
     return view('programmes.index', compact('programmes'));
 }
