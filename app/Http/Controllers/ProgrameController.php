@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Commune;
-use App\Models\Info;
+
 
 use App\Models\Programe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class ProgrameController extends Controller
 {
@@ -27,7 +29,7 @@ class ProgrameController extends Controller
     $villeId = Auth::user()->ville_id;
 
     // Récupérer toutes les pharmacies des communes de la ville
-    $programmes = Programe::where('ville_id', $villeId)->get();
+    $programmes = Programe::all();
     // Prendre seulement le premier enregistrement pour la ville
 
 
@@ -55,9 +57,9 @@ public function par()
     public function create()
     {
         $villeId = Auth::user()->ville_id;
-        $communes = Commune::where('ville_id', $villeId)->get();
-
-        return view('programmes.create', compact('communes'));
+       // $communes = Commune::where('ville_id', $villeId)->get();
+       //$info = Programe::where('ville_id', $villeId)->get();
+        return view('programmes.create');
     }
 
     /**
@@ -66,30 +68,42 @@ public function par()
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
 
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'file' => 'required|file|mimes:pdf,doc,docx,png,jpg,jpeg', // adapte les formats
-        ]);
 
-        $filePath = null;
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('uploads', 'public');
-        }
+     public function store(Request $request)
+     {
+         $validated = $request->validate([
+             'name'      => 'required|string|max:255',
+             'image_one' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx',
+         ]);
 
-        Programe::create([
-            'code' => uniqid('PRO-PHARMA-'), // code auto généré
-            'name' => $request->name,
-            'file_path' => $filePath,
-            'is_publish' => false,
-            'user_id' => auth()->id(),
-        ]);
-        $validated['ville_id'] = auth()->user()->ville_id;
-        return redirect()->route('programmes.index')->with('success', 'Programme créé avec succès.');
+         $filePath = null;
+    if ($request->hasFile('image_one')) {
+        $filePath = $request->file('image_one')->store('infosimages', 'public');
     }
+        // dd($filePath);
+         Programe::create([
+             'name'       => $validated['name'],
+             'image_one'  => $filePath, // ✅ chemin correct
+             'is_publish' => false,
+             'user_id'    => auth()->id(),
+             'ville_id'   => auth()->user()->ville_id,
+         ]);
+
+         return redirect()->route('programmes.index')
+             ->with('success', 'Programme créé avec succès.');
+     }
+
+
+     public function download(Programe $programme)
+     {
+        if ($programme->image_one && Storage::disk('public')->exists($programme->image_one)) {
+            return Storage::disk('public')->download($programme->image_one);
+        }
+        return back()->with('error', 'Aucun fichier disponible.');
+
+     }
 
 
 
@@ -124,7 +138,7 @@ public function par()
             abort(403, "Accès interdit à ce programme.");
         }
 
-        $communes = Commune::where('ville_id', $villeId)->get();
+       // $communes = Commune::where('ville_id', $villeId)->get();
         $selectedPharmacies = $programme->pharmacies->pluck('id')->toArray();
         // $pharmacies = Pharmacie::whereHas('commune', function($q) use ($villeId) {
         //     $q->where('ville_id', $villeId);
@@ -162,7 +176,7 @@ public function par()
 public function search(Request $request)
 {
     $villeId = auth()->user()->ville_id;
-    $info = Info::where('ville_id', $villeId)->first();
+   // $info = Info::where('ville_id', $villeId)->first();
     $query = Programe::with(['pharmacies.commune'])
         ->whereHas('commune', function($q) use ($villeId) {
             $q->where('ville_id', $villeId);

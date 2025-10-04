@@ -33,8 +33,6 @@ class InfoController extends Controller
         return view('apres.infos', compact('info'));
     }
 
-
-
     public function storeOrUpdate(Request $request)
     {
         $villeId = auth()->user()->ville_id;

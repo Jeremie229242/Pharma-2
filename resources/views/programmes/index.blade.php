@@ -98,49 +98,49 @@
                         >
 
                           <span class="ml-3 font-bold text-blueGray-600">
-                          {{ $programme->commune->ville->name_ville }}
+
                           </span>
                         </th>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           <div class="flex">
-                          {{ $programme->commune->name_commune }}
+
                           </div>
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                         <ul>
-                                @foreach($programme->pharmacies as $pharmacie)
-                                    <li>{{ $pharmacie->name_pharmacie }}</li>
-                                @endforeach
+
                             </ul>
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           <div class="flex">
-                          {{ $programme->date_debut }}
+                          {{ $programme->code }}
                           </div>
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           <div class="flex">
-                          {{ $programme->date_fin }}
+                          {{ $programme->name }}
                           </div>
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          <div class="flex">
-                          @if($programme->is_garde)
-                                ✅ Oui
-                            @else
-                                ❌ Non
-                            @endif
-                          </div>
+                        <div class="flex">
+    @if($programme->image_one)
+        <a href="{{ route('programmes.download', $programme) }}" class="dropdown-item">
+            <i class="dw dw-download"></i> Télécharger
+        </a>
+    @else
+        Aucun
+    @endif
+</div>
                         </td>
 
                         <td

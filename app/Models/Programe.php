@@ -11,7 +11,7 @@ class Programe extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     public $table = 'programes';
 
     protected $dates = [
@@ -25,7 +25,7 @@ class Programe extends Model
     'name',
      'ville_id',
       'user_id',
-      'file_path',
+     'image_one',
        'is_publish'
     ];
 

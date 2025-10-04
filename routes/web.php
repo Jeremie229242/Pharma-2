@@ -60,12 +60,11 @@ Route::get('ville/{ville}', [DashboardController::class, 'ville'])
     Route::post('/infos', [InfoController::class, 'storeOrUpdate'])->name('infos.storeOrUpdate');
     Route::get('/paras', [ProgrameController::class, 'par'])->name('programmes.para');
     Route::get('/recherche-pharmacies', [ProgrameController::class, 'search'])->name('programmes.search');
+    Route::get('programmes/{programme}/download', [ProgrameController::class, 'download'])->name('programmes.download');
 
-    Route::resource('communes', CommuneController::class)->middleware('auth');
-    Route::resource('pharmacies', PharmacieController::class)->middleware('auth');
     Route::resource('programmes', ProgrameController::class)->middleware('auth');
 // web.php
-Route::get('/communes/{commune}/pharmacies', [PharmacieController::class, 'getByCommune']);
+//Route::get('/communes/{commune}/pharmacies', [PharmacieController::class, 'getByCommune']);
 
     // Route::middleware(['auth'])->group(function () {
     //     Route::prefix('ville/{ville}')->middleware('check.ville')->group(function () {

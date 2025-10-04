@@ -54,8 +54,8 @@ class User extends Authenticatable
     ];
 
     public function ville()
-{
-    return $this->belongsTo(Ville::class);
-}
+    {
+        return $this->belongsTo(Ville::class, 'ville_id');
+    }
 
 }
