@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
+use App\Models\User;
+use App\Notifications\ProgrammePublishedNotification;
 
 class ProgrameController extends Controller
 {
@@ -105,6 +107,21 @@ public function par()
 
      }
 
+
+
+     public function publish(Programe $programme)
+     {
+         // ✅ Publier
+         $programme->update(['is_publish' => true]);
+
+         // ✅ Récupérer les utilisateurs de la même ville
+         $users = User::where('ville_id', $programme->ville_id)->get();
+
+         // ✅ Envoyer la notification à tous
+         \Notification::send($users, new ProgrammePublishedNotification($programme));
+
+         return redirect()->back()->with('success', 'Programme publié et notifications envoyées avec succès.');
+     }
 
 
     /**

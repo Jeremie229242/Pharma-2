@@ -62,6 +62,9 @@ Route::get('ville/{ville}', [DashboardController::class, 'ville'])
     Route::get('/recherche-pharmacies', [ProgrameController::class, 'search'])->name('programmes.search');
     Route::get('programmes/{programme}/download', [ProgrameController::class, 'download'])->name('programmes.download');
 
+Route::post('/programmes/{programme}/publish', [ProgrameController::class, 'publish'])
+    ->name('programmes.publish');
+
     Route::resource('programmes', ProgrameController::class)->middleware('auth');
 // web.php
 //Route::get('/communes/{commune}/pharmacies', [PharmacieController::class, 'getByCommune']);

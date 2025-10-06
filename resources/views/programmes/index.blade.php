@@ -104,9 +104,22 @@
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
+                        @if($programme->is_publish == 0)
                           <div class="flex">
+                          <form action="{{ route('programmes.publish', $programme->id) }}" method="POST" class="d-inline">
+    @csrf
+    <button type="submit" class="btn btn-success btn-sm"
+        onclick="return confirm('Voulez-vous vraiment publier ce programme ?')">
+        Publier
+    </button>
+</form>
 
                           </div>
+                          @else
+                          <div class="flex">
+        Aucun
+        </div>
+    @endif
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
