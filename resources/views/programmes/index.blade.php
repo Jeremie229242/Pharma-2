@@ -56,33 +56,39 @@
                         <th
                           class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                         >
-                          Ville
+                          Code
                         </th>
                         <th
                           class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                         >
-                           commune
+                          ville
                         </th>
                         <th
                           class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                         >
-                          Pharmacie
+                          par
                         </th>
 
                         <th
                           class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                         >
-                          Date Debut
+                          le
                         </th>
                         <th
                           class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                         >
-                           Date fin
+                          Status
                         </th>
                         <th
                           class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
                         >
-                          De garde
+                        Telecharger
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        >
+
+                          Date de publication
                         </th>
 
                         <th
@@ -98,9 +104,33 @@
                         >
 
                           <span class="ml-3 font-bold text-blueGray-600">
-
+                          {{ $programme->code }}
                           </span>
                         </th>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+
+
+                          <div class="flex">
+                          {{ $programme->ville->name_ville }}
+        </div>
+
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                        <ul>
+                        {{ $programme->user->name }}
+                            </ul>
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          <div class="flex">
+                          {{ $programme->created_at }}
+                          </div>
+                        </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
@@ -108,7 +138,7 @@
                           <div class="flex">
                           <form action="{{ route('programmes.publish', $programme->id) }}" method="POST" class="d-inline">
     @csrf
-    <button type="submit" class="btn btn-success btn-sm"
+    <button type="submit" class="bg-pink-500 active:bg-emerald-900 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
         onclick="return confirm('Voulez-vous vraiment publier ce programme ?')">
         Publier
     </button>
@@ -117,42 +147,34 @@
                           </div>
                           @else
                           <div class="flex">
-        Aucun
+        Deja Publier
         </div>
     @endif
                         </td>
                         <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                        <ul>
-
-                            </ul>
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                          class=" border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           <div class="flex">
-                          {{ $programme->code }}
-                          </div>
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          <div class="flex">
-                          {{ $programme->name }}
+                          @if($programme->image_one)
+        <a href="{{ route('programmes.download', $programme) }}" class=" bg-emerald-500  active:bg-emerald-900 uppercase text-white font-bold hover:shadow-md shadow text-xs px-2 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+            <i class="fas fa-download mr-1"></i> Télécharger
+        </a>
+    @else
+        Aucun
+    @endif
                           </div>
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                         <div class="flex">
-    @if($programme->image_one)
-        <a href="{{ route('programmes.download', $programme) }}" class="dropdown-item">
-            <i class="dw dw-download"></i> Télécharger
-        </a>
-    @else
-        Aucun
-    @endif
+
+
+    @if($programme->published_at)
+    <span class="text-emerald-500">Publié le {{ $programme->published_at->translatedFormat(' d F Y à H:i') }}</span>
+@else
+    <span class="text-red-500">Non publié</span>
+@endif
 </div>
                         </td>
 

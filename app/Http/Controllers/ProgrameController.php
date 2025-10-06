@@ -112,7 +112,9 @@ public function par()
      public function publish(Programe $programme)
      {
          // ✅ Publier
-         $programme->update(['is_publish' => true]);
+         $programme->update([
+            'is_publish' => true,
+        'published_at' => now(),]);
 
          // ✅ Récupérer les utilisateurs de la même ville
          $users = User::where('ville_id', $programme->ville_id)->get();

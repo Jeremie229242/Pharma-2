@@ -26,9 +26,12 @@ class Programe extends Model
      'ville_id',
       'user_id',
      'image_one',
-       'is_publish'
+       'is_publish',
+       'published_at'
     ];
-
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
     protected static function boot()
     {
         parent::boot();
