@@ -192,11 +192,7 @@
                             class="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
                             id="table-light-{{ $programme->id }}-dropdown"
                           >
-                            <a
-                              href="{{ route('programmes.show', $programme->id) }}"
-                              class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                              >Voir</a
-                            ><a
+                           <a
                               href="{{ route('programmes.edit', $programme->id) }}"
                               class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
                               >Modifier</a
@@ -213,7 +209,7 @@ class="text-sm py-2 px-4 font-normal block w-full   whitespace-nowrap bg-transpa
 >
 <form action="{{ route('programmes.destroy', $programme->id) }}" method="POST" style="display:inline">
                     @csrf @method('DELETE')
-                    <button type="submit">Supprimer</button>
+                    <button type="submit"  onclick="return confirm('Voulez-vous vraiment suprimmer ce programme ?')">Supprimer</button>
                     </form>
                     </a
 >

@@ -150,46 +150,56 @@ public function par()
     {
         $villeId = auth()->user()->ville_id;
 
-        $programme = Programe::with('pharmacies')->findOrFail($id);
+        $programme = Programe::findOrFail($id);
 
         // Vérifie que le programme est bien dans la ville de l’utilisateur
-        if ($programme->commune->ville_id != $villeId) {
+        if ($programme->ville_id != $villeId) {
             abort(403, "Accès interdit à ce programme.");
         }
 
        // $communes = Commune::where('ville_id', $villeId)->get();
-        $selectedPharmacies = $programme->pharmacies->pluck('id')->toArray();
+       // $selectedPharmacies = $programme->pharmacies->pluck('id')->toArray();
         // $pharmacies = Pharmacie::whereHas('commune', function($q) use ($villeId) {
         //     $q->where('ville_id', $villeId);
         // })->get();
-        return view('programmes.edit', compact('programme', 'communes', 'selectedPharmacies'));
+        return view('programmes.edit', compact('programme'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Programe $programme)
     {
+        // Validation
         $validated = $request->validate([
-            'commune_id' => 'required|exists:communes,id',
-            'pharmacies' => 'required|array',
-            'pharmacies.*' => 'exists:pharmacies,id',
-            'date_debut' => 'required|date',
-            'date_fin' => 'required|date|after_or_equal:date_debut',
-            'is_garde' => 'nullable|boolean',
+            'name'      => 'required|string|max:255',
+            'image_one' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx',
         ]);
 
-        $programme = Programe::findOrFail($id);
+        // Si un nouveau fichier est uploadé
+        if ($request->hasFile('image_one')) {
+            // Supprimer l'ancien fichier si existe
+            if ($programme->image_one && Storage::disk('public')->exists($programme->image_one)) {
+                Storage::disk('public')->delete($programme->image_one);
+            }
 
+            // Enregistrer le nouveau fichier
+            $filePath = $request->file('image_one')->store('infosimages', 'public');
+            $validated['image_one'] = $filePath;
+        } else {
+            // Si aucun nouveau fichier, garder l'ancien
+            $validated['image_one'] = $programme->image_one;
+        }
+
+        // Mise à jour
         $programme->update([
-            'commune_id' => $validated['commune_id'],
-            'date_debut' => $validated['date_debut'],
-            'date_fin' => $validated['date_fin'],
-            'is_garde' => $request->has('is_garde'),
+            'name'       => $validated['name'],
+            'image_one'  => $validated['image_one'],
+            'user_id'    => auth()->id(),
+            'ville_id'   => auth()->user()->ville_id,
         ]);
 
-        // Synchroniser les pharmacies
-        $programme->pharmacies()->sync($validated['pharmacies']);
-
-        return redirect()->route('programmes.index')->with('success', 'Programme mis à jour avec succès.');
+        return redirect()->route('programmes.index')
+            ->with('success', 'Programme mis à jour avec succès.');
     }
+
 
    // app/Http/Controllers/ProgrameController.php
 public function search(Request $request)
@@ -220,8 +230,11 @@ public function search(Request $request)
      * @param  \App\Models\Programe  $programe
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Programe $programe)
+    public function destroy($id)
     {
-        //
+        $programme = Programe::findOrFail($id);
+        $programme->delete();
+
+        return redirect()->route('programmes.index')->with('success', 'Programme supprimée avec succès.');
     }
 }
