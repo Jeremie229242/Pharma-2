@@ -48,10 +48,10 @@ class ProgrammePublishedNotification extends Notification
             ->subject('Nouveau programme de pharmacie de garde disponible')
             ->greeting('Bonjour ' . $notifiable->name . ',')
             ->line('Les programmes des pharmacies de garde de votre ville sont maintenant disponibles.')
-            ->action('👉 Cliquez ici pour télécharger', url('/programmes/' . $this->programme->id))
+            ->action('👉 Cliquez ici pour télécharger', config('app.url'))
             ->line('Merci d’utiliser notre application !');
     }
-    
+
     public function toDatabase(object $notifiable): array
     {
         return [

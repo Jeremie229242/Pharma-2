@@ -156,7 +156,7 @@
                         >
                           <div class="flex">
                           @if($programme->image_one)
-        <a href="{{ route('programmes.download', $programme) }}" class=" bg-emerald-500  active:bg-emerald-900 uppercase text-white font-bold hover:shadow-md shadow text-xs px-2 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+        <a href="{{ route('programmes.download', $programme) }}"  class=" bg-emerald-500  active:bg-emerald-900 uppercase text-white font-bold hover:shadow-md shadow text-xs px-2 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
             <i class="fas fa-download mr-1"></i> Télécharger
         </a>
     @else
@@ -207,10 +207,20 @@
 
 class="text-sm py-2 px-4 font-normal block w-full   whitespace-nowrap bg-transparent text-blueGray-700 "
 >
-<form action="{{ route('programmes.destroy', $programme->id) }}" method="POST" style="display:inline">
-                    @csrf @method('DELETE')
-                    <button type="submit"  onclick="return confirm('Voulez-vous vraiment suprimmer ce programme ?')">Supprimer</button>
-                    </form>
+<form id="delete-form-{{ $programme->id }}"
+      action="{{ route('programmes.destroy', $programme->id) }}"
+      method="POST"
+      style="display:none;">
+    @csrf
+    @method('DELETE')
+</form>
+
+<button type="button"
+    onclick="confirmDelete('{{ $programme->id }}')"
+    class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-red-600 hover:text-red-800">
+    Supprimer
+</button>
+
                     </a
 >
 
@@ -233,6 +243,30 @@ class="text-sm py-2 px-4 font-normal block w-full   whitespace-nowrap bg-transpa
 
 
 
+          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+function confirmDelete(id) {
+    Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Cette action supprimera définitivement ce programme.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e3342f',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-' + id).submit();
+        }
+    });
+}
+
+
+
+
+</script>
 
 
 

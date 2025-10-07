@@ -147,7 +147,7 @@ public function download(Programe $programme)
           if ($users->count() > 0)
           {
             // ✅ Envoyer la notification à tous
-            Notification::send($users, new ProgrammePublishedNotification($programme));
+            \Notification::send($users, new ProgrammePublishedNotification($programme));
              // 🔔 SweetAlert succès
              Alert::success('Programme publié', 'Notifications envoyées à tous les utilisateurs de la ville.');
              } else {
@@ -269,10 +269,11 @@ public function search(Request $request)
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        $programme = Programe::findOrFail($id);
-        $programme->delete();
+{
+    $programme = Programe::findOrFail($id);
+    $programme->delete();
 
-        return redirect()->route('programmes.index')->with('success', 'Programme supprimée avec succès.');
-    }
+    Alert::success('Supprimé !', 'Le programme a été supprimé avec succès.');
+    return redirect()->route('programmes.index');
+}
 }
