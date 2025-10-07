@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -29,33 +30,43 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
 
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        // Authentifier l'utilisateur
+
+
+public function store(LoginRequest $request): RedirectResponse
+{
+    try {
+        // 🔐 Authentifier l'utilisateur
         $request->authenticate();
 
         $user = Auth::user();
 
-        // 🔐 Vérifier que l'utilisateur a validé OTP
+        // 🔒 Vérifier que l'utilisateur a validé son OTP
         if (! $user->is_verified) {
             Auth::logout();
-            return back()->withErrors([
-                'email' => 'Votre compte n’est pas encore vérifié. Veuillez entrer le code OTP envoyé par email.',
-            ]);
+            Alert::warning('Compte non vérifié', 'Veuillez entrer le code OTP envoyé par email.');
+            return redirect()->back();
         }
 
         // 🚀 Supprimer toutes les anciennes sessions (session unique)
         DB::table('sessions')->where('user_id', $user->id)->delete();
 
-        // 🔔 Notifier en temps réel si l'utilisateur était connecté ailleurs
+        // 🔔 Notifier si l'utilisateur était connecté ailleurs
         event(new SessionReplaced($user->id));
 
-        // Régénérer session pour la nouvelle connexion
+        // 🌀 Régénérer la session pour la nouvelle connexion
         $request->session()->regenerate();
 
-        // 🔹 Redirection selon la ville de l'utilisateur
+        // ✅ Succès : redirection selon la ville de l'utilisateur
+        Alert::success('Connexion réussie', 'Nous sommes content de vous revoir !');
+
         return redirect()->intended(RouteServiceProvider::redirectTo($user));
+    } catch (\Throwable $e) {
+        // ❌ En cas d'échec
+        Alert::error('Erreur de connexion', 'Une erreur est survenue : ' . $e->getMessage());
+        return redirect()->back();
     }
+}
+
 
 
     /**
@@ -63,6 +74,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        Alert::success('Déconnexion réussie', 'Merci de votre Passage !');
+
         DB::table('sessions')->where('user_id', Auth::id())->delete();
 
         Auth::guard('web')->logout();
@@ -70,7 +83,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
-        return redirect('/');
+        Alert::success('Déconnexion réussie', 'Merci de votre Passage !');
+        return redirect()->route('login');
     }
 }

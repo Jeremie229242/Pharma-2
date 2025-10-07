@@ -77,6 +77,7 @@
         </div>
         <div class="flex flex-wrap mt-6 relative">
           <!-- Bouton Renvoyer OTP -->
+          <div class="w-1/2">
         <form method="POST" action="{{ route('otp.resend') }}" class="mt-4">
             @csrf
             <input type="hidden" name="email" value="{{ $email }}">
@@ -85,6 +86,14 @@
                 {{ __('Renvoyer le code OTP') }}
             </button>
         </form>
+          </div>
+
+          <!-- Bouton Renvoyer OTP -->
+          <div class="w-1/2 text-right  mt-6 font-bold">
+          <a href="{{ route('register') }}"  class="text-blueGray-200">
+              <small>Créer â Nouveau Votre Compte</small>
+            </a>
+          </div>
           </div>
         </div>
       </div>

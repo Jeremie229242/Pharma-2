@@ -37,9 +37,10 @@
       rel="stylesheet"
       href="{{asset('v1/styles/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}"
     />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     <link rel="stylesheet" href="{{asset('v1/styles/tailwind12.css')}}">
-    <title>Dashboard | Notus Tailwind JS by Creative Tim</title>
+    <title>A| Notus Tailwind JS by Creative Tim</title>
   </head>
   <body class="text-blueGray-700 antialiased">
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -59,6 +60,44 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
       charset="utf-8"
     ></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    @if(session('success'))
+    <script>
+        $(document).ready(function() {
+            Toastify({
+                text: "{{session('success')}}",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: " #000",
+                },
+                onClick: function(){} // Callback after click
+            }).showToast();
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        $(document).ready(function() {
+            Toastify({
+                text: "{{session('error')}}",
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: " #ff5f6d",
+                },
+                onClick: function(){} // Callback after click
+            }).showToast();
+        });
+    </script>
+@endif
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
     <script type="text/javascript">
       /* Make dynamic date appear */
@@ -292,7 +331,7 @@
         window.myBar = new Chart(ctx, config);
       })();
     </script>
-
+@include('sweetalert::alert')
 
   </body>
 </html>

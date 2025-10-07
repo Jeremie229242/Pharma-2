@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Mail\OtpMail;
 
 class OtpController extends Controller
@@ -28,16 +29,19 @@ class OtpController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
-            return back()->withErrors(['email' => 'Utilisateur introuvable']);
+
+            Alert::error('Erreur otp', 'Utilisateur introuvable. Veuillez vous Réinscrire');
+            return redirect()->back();
         }
 
 
          // Si OTP expiré et jamais vérifié
     if (!$user->is_verified && $user->otp_expires_at && now()->gt($user->otp_expires_at)) {
         $user->delete(); // supprime l’utilisateur de la base
-        return redirect()->route('register')->withErrors([
-            'email' => 'Votre code OTP a expiré. Veuillez vous réinscrire.'
-        ]);
+
+            Alert::warning('Erreur otp', 'Votre code OTP a expiré. Cliquer sur Renvoyer code Otp Pour recevoir un nouveau code.');
+            return redirect()->back();
+
     }
 
 
@@ -50,12 +54,15 @@ class OtpController extends Controller
             // connecter automatiquement
             Auth::login($user);
 
-            return redirect()->route('apres.ville', ['ville' => $user->ville_id])->with('success', 'Compte vérifié avec succès !');
+            Alert::success('Vérification Réussie', 'Compte vérifié avec succès.');
+
+            return redirect()->route('apres.ville', ['ville' => $user->ville_id]);
           // return view('ville', $user->ville_id)->with('success', 'Compte vérifié avec succès !');
 
         }
 
-        return back()->withErrors(['otp' => 'Code invalide ou expiré.']);
+        Alert::error('Erreur otp', 'Votre code OTP a expiré. Cliquer sur Renvoyer code Otp Pour recevoir un nouveau code.');
+            return redirect()->back();
     }
 
 
@@ -73,8 +80,8 @@ class OtpController extends Controller
 
 
     if ($user->otp_sent_at && $user->otp_sent_at->gt(now()->subMinutes(2))) {
-
-        return back()->withErrors(['otp' => 'Veuillez patienter avant de demander un nouvel OTP.']);
+        Alert::warning('Erreur otp', 'Veuillez patienter 3 minutes avant de demander un nouvel OTP.');
+        return redirect()->back();
     }
 
     if ($user->is_verified) {

@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Mail;
@@ -36,6 +37,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        try {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
@@ -66,9 +68,12 @@ class RegisteredUserController extends Controller
 
         // envoyer l’OTP
         Mail::to($user->email)->send(new OtpMail($otp));
-
+        Alert::success('Enregistrement réussie', 'Un Code a été envoyé dans votre mail pour validation de votre compte !');
         // pas d’Auth::login($user) tant que pas vérifié
         return redirect()->route('otp.form', ['email' => $user->email]);
-
+    } catch (\Throwable $e) {
+        Alert::error('Erreur de connexion', 'Une erreur est survenue : ' . $e->getMessage());
+        return redirect()->back();
+    }
     }
 }
