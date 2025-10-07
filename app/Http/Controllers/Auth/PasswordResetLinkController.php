@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PasswordResetLinkController extends Controller
 {
@@ -29,16 +30,21 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
+        try { // 🔄 Envoi du lien de réinitialisation
+            $status = Password::sendResetLink( $request->only('email') );
+            if ($status === Password::RESET_LINK_SENT)
+            { // ✅ Succès : afficher une alerte SweetAlert
+                Alert::success('Succès', 'Un lien de réinitialisation a été envoyé à votre adresse email.');
+                return back();
+            } else {
+                // ❌ Erreur d’envoi
+                Alert::error('Erreur', 'Impossible d’envoyer le lien de réinitialisation. Vérifiez votre adresse email.');
+                return back()->withInput($request->only('email'));
+            } } catch (\Throwable $e) {
+                // ⚠️ Erreur inattendue
+                Alert::error('Erreur système', 'Une erreur est survenue : ' . $e->getMessage());
+                return back();
+             }
 
-        return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
     }
 }

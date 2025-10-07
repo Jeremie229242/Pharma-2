@@ -41,52 +41,21 @@
                 />
               </div>
 
-              <div class="relative w-full mb-3">
-                <label
-                  class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                  htmlFor="grid-password"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                   name="password"
-                                required autocomplete="current-password"
-                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  placeholder="Mot de Passe"
-                />
-              </div>
-              <div>
-                <label class="inline-flex items-center cursor-pointer">
-                  <input
-                    id="customCheckLogin"
-                    type="checkbox"
-                    name="remember"
-                    class="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
-                  />
-                  <span class="ml-2 text-sm font-semibold text-blueGray-600">
-                    Se Souvenir de moi
-                  </span>
-                </label>
-              </div>
+
 
               <div class="text-center mt-6">
                 <button
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="submit"
                 >
-                  Sign In
+                  Envoyer un liens
                 </button>
               </div>
             </form>
           </div>
         </div>
         <div class="flex flex-wrap mt-6 relative">
-          <div class="w-1/2">
-            <a href="{{ route('password.request') }}" class="text-blueGray-200">
-              <small>Mot de passe oubliée?</small>
-            </a>
-          </div>
+
           <div class="w-1/2 text-right">
             <a href="{{ route('register') }}"  class="text-blueGray-200">
               <small>Créer un Nouveau Compte</small>

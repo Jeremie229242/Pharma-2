@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use RealRashid\SweetAlert\Facades\Alert;
 
 use App\Models\Programe;
 use Illuminate\Http\Request;
@@ -73,57 +74,94 @@ public function par()
 
 
 
-     public function store(Request $request)
-     {
-         $validated = $request->validate([
-             'name'      => 'required|string|max:255',
-             'image_one' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx',
-         ]);
-
-         $filePath = null;
-    if ($request->hasFile('image_one')) {
-        $filePath = $request->file('image_one')->store('infosimages', 'public');
-    }
-        // dd($filePath);
-         Programe::create([
-             'name'       => $validated['name'],
-             'image_one'  => $filePath, // ✅ chemin correct
-             'is_publish' => false,
-             'user_id'    => auth()->id(),
-             'ville_id'   => auth()->user()->ville_id,
-         ]);
-
-         return redirect()->route('programmes.index')
-             ->with('success', 'Programme créé avec succès.');
-     }
 
 
-     public function download(Programe $programme)
-     {
-        if ($programme->image_one && Storage::disk('public')->exists($programme->image_one)) {
-            return Storage::disk('public')->download($programme->image_one);
+
+public function store(Request $request)
+{
+    // ✅ Validation
+    $validated = $request->validate([
+        'name'      => 'required|string|max:255',
+        'image_one' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx',
+    ]);
+
+    try {
+        // 📂 Gestion du fichier
+        $filePath = null;
+        if ($request->hasFile('image_one')) {
+            $filePath = $request->file('image_one')->store('infosimages', 'public');
         }
-        return back()->with('error', 'Aucun fichier disponible.');
 
-     }
+        // 💾 Création du programme
+        Programe::create([
+            'name'       => $validated['name'],
+            'image_one'  => $filePath,
+            'is_publish' => false,
+            'user_id'    => auth()->id(),
+            'ville_id'   => auth()->user()->ville_id,
+        ]);
+
+        // ✅ SweetAlert succès
+        Alert::success('Succès', 'Programme créé avec succès.');
+
+        return redirect()->route('programmes.index');
+
+    } catch (\Throwable $e) {
+        // ❌ SweetAlert erreur
+        Alert::error('Erreur', 'Une erreur est survenue : ' . $e->getMessage());
+        return back()->withInput();
+    }
+}
+
+
+
+
+public function download(Programe $programme)
+{
+    try
+     {
+        // ✅ Vérifier si le fichier existe
+        if ($programme->image_one && Storage::disk('public')->exists($programme->image_one))
+         {
+            Alert::success('Téléchargement prêt', 'Votre fichier va commencer à se télécharger dans quelques secondes.');
+            return Storage::disk('public')->download($programme->image_one);
+         } // ❌ Si le fichier n’existe pas
+          Alert::error('Fichier introuvable', 'Aucun fichier disponible pour ce programme.');
+          return back();
+         } catch (\Throwable $e)
+          {
+            // ⚠️ En cas d’erreur inattendue
+            Alert::error('Erreur', 'Impossible de télécharger le fichier : ' . $e->getMessage());
+             return back();
+             }
+             }
 
 
 
      public function publish(Programe $programme)
-     {
-         // ✅ Publier
-         $programme->update([
-            'is_publish' => true,
-        'published_at' => now(),]);
-
-         // ✅ Récupérer les utilisateurs de la même ville
-         $users = User::where('ville_id', $programme->ville_id)->get();
-
-         // ✅ Envoyer la notification à tous
-         \Notification::send($users, new ProgrammePublishedNotification($programme));
-
-         return redirect()->back()->with('success', 'Programme publié et notifications envoyées avec succès.');
-     }
+     { try {
+         // ✅ Publier le programme
+         $programme->update([ 'is_publish' => true, 'published_at' => now(), ]);
+          // ✅ Récupérer les utilisateurs de la même ville
+          $users = User::where('ville_id', $programme->ville_id)->get();
+          if ($users->count() > 0)
+          {
+            // ✅ Envoyer la notification à tous
+            Notification::send($users, new ProgrammePublishedNotification($programme));
+             // 🔔 SweetAlert succès
+             Alert::success('Programme publié', 'Notifications envoyées à tous les utilisateurs de la ville.');
+             } else {
+                 // ⚠️ Aucun utilisateur trouvé
+                 Alert::info('Aucun utilisateur', 'Aucun utilisateur inscrit dans cette ville.');
+                 }
+                 return redirect()->back();
+                 } catch (\Throwable $e)
+                 {
+                    // ❌ En cas d'erreur
+                    Alert::error('Erreur', 'Impossible de publier le programme : ' . $e->getMessage());
+                     return back();
+                     }
+                     }
 
 
     /**

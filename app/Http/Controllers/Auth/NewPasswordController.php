@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class NewPasswordController extends Controller
 {
@@ -28,34 +29,28 @@ class NewPasswordController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'token' => ['required'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
-
-                event(new PasswordReset($user));
-            }
-        );
-
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
-    }
+    { // ✅ Validation des champs
+        $request->validate([ 'token' => ['required'],
+         'email' => ['required', 'email'],
+         'password' => ['required', 'confirmed',
+         Rules\Password::defaults()], ]);
+         
+         try { // 🔄 Tentative de réinitialisation du mot de passe
+            $status = Password::reset( $request->only('email', 'password', 'password_confirmation', 'token'),
+             function ($user) use ($request) { $user->forceFill([ 'password' => Hash::make($request->password),
+                 'remember_token' => Str::random(60), ])->save();
+                 event(new PasswordReset($user)); } );
+                 // ✅ Si succès
+                 if ($status === Password::PASSWORD_RESET)
+                 { Alert::success('Mot de passe réinitialisé', 'Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter.');
+                    return redirect()->route('login'); }
+                    // ❌ Si échec (token invalide ou email incorrect)
+                    Alert::error('Erreur', 'Impossible de réinitialiser le mot de passe. Vérifiez vos informations.');
+                    return back()->withInput($request->only('email'));
+                 } catch (\Throwable $e) {
+                    // ⚠️ En cas d’erreur inattendue
+                    Alert::error('Erreur système', 'Une erreur est survenue : ' . $e->getMessage());
+                    return back();
+                 }
+        }
 }
