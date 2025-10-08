@@ -6,6 +6,7 @@ use App\Models\Programe;
 use App\Models\Ville;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -19,14 +20,33 @@ class DashboardController extends Controller
 {
 
     $villeId = Auth::user()->ville_id;
+// ✅ Téléchargements par utilisateur dans la ville
+$downloadsPerUser = DB::table('downloads')
+->join('users', 'users.id', '=', 'downloads.user_id')
+->where('downloads.ville_id', $villeId)
+->select('users.name', DB::raw('SUM(downloads.total_downloads) as total'))
+->groupBy('users.name')
+->orderByDesc('total')
+->get();
+
+// ✅ Évolution mensuelle pour toute la ville
+$downloadsByMonth = DB::table('downloads')
+->where('ville_id', $villeId)
+->where('year', now()->year)
+->selectRaw('month, SUM(total_downloads) as total')
+->groupBy('month')
+->orderBy('month')
+->pluck('total', 'month');
 
     // ✅ Récupérer uniquement le dernier programme publié dans la ville de l'utilisateur
     $programme = Programe::where('ville_id', $villeId)
         ->where('is_publish', true)
         ->orderByDesc('published_at')
         ->first();
+
     $ville = Ville::findOrFail($villeId);
-    return view('apres.ville', compact('ville','programme'));
+    
+    return view('apres.ville', compact('ville','programme', 'downloadsPerUser','downloadsByMonth'));
 }
 
 public function inf($villeId)

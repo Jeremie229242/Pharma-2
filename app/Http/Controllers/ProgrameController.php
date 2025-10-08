@@ -13,6 +13,8 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Notifications\ProgrammePublishedNotification;
+use App\Models\Download;
+use Illuminate\Support\Facades\DB;
 
 class ProgrameController extends Controller
 {
@@ -116,25 +118,67 @@ public function store(Request $request)
 
 
 
+// public function download(Programe $programme)
+// {
+//     try
+//      {
+//         // ✅ Vérifier si le fichier existe
+//         if ($programme->image_one && Storage::disk('public')->exists($programme->image_one))
+//          {
+//             Alert::success('Téléchargement prêt', 'Votre fichier va commencer à se télécharger dans quelques secondes.');
+//             return Storage::disk('public')->download($programme->image_one);
+//          } // ❌ Si le fichier n’existe pas
+//           Alert::error('Fichier introuvable', 'Aucun fichier disponible pour ce programme.');
+//           return back();
+//          } catch (\Throwable $e)
+//           {
+//             // ⚠️ En cas d’erreur inattendue
+//             Alert::error('Erreur', 'Impossible de télécharger le fichier : ' . $e->getMessage());
+//              return back();
+//              }
+//              }
+
+
+
+
 public function download(Programe $programme)
 {
-    try
-     {
-        // ✅ Vérifier si le fichier existe
-        if ($programme->image_one && Storage::disk('public')->exists($programme->image_one))
-         {
-            Alert::success('Téléchargement prêt', 'Votre fichier va commencer à se télécharger dans quelques secondes.');
+    try {
+        if ($programme->image_one && Storage::disk('public')->exists($programme->image_one)) {
+            $user = auth()->user();
+            $villeId = $user->ville_id;
+            $month = now()->month;
+            $year = now()->year;
+
+            // ✅ Mise à jour du compteur pour ce user/mois/année/programme
+            DB::table('downloads')->updateOrInsert(
+                [
+                    'programe_id' => $programme->id,
+                    'user_id' => $user->id,
+                    'ville_id' => $villeId,
+                    'month' => $month,
+                    'year' => $year,
+                ],
+                [
+                    'total_downloads' => DB::raw('total_downloads + 1'),
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]
+            );
+
+            Alert::success('Téléchargement réussi', 'Merci pour votre intérêt !');
             return Storage::disk('public')->download($programme->image_one);
-         } // ❌ Si le fichier n’existe pas
-          Alert::error('Fichier introuvable', 'Aucun fichier disponible pour ce programme.');
-          return back();
-         } catch (\Throwable $e)
-          {
-            // ⚠️ En cas d’erreur inattendue
-            Alert::error('Erreur', 'Impossible de télécharger le fichier : ' . $e->getMessage());
-             return back();
-             }
-             }
+        }
+
+        Alert::error('Fichier introuvable', 'Aucun fichier disponible pour ce programme.');
+        return back();
+    } catch (\Throwable $e) {
+        Alert::error('Erreur', 'Impossible de télécharger le fichier : ' . $e->getMessage());
+        return back();
+    }
+}
+
+
 
 
 

@@ -31,7 +31,7 @@
                             Traffic
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
-                            350,897
+                            {{$downloadsByMonth}}
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">
@@ -371,7 +371,7 @@
     </div>
 
                     </td>
-                   
+
                     <td
                       class=" border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                     >
