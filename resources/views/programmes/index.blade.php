@@ -17,25 +17,20 @@
     <div class="flex flex-wrap mt-4">
             <div class="w-full mb-12 px-4">
               <div
-                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white"
-              >
+                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
                 <div class="rounded-t mb-0 px-4 py-3 border-0">
                   <div class="flex flex-wrap items-center">
                     <div
-                      class="relative w-full px-4 max-w-full flex-grow flex-1"
-                    >
+                      class="relative w-full px-4 max-w-full flex-grow flex-1">
                       <h3 class="font-semibold text-lg text-blueGray-700">
                       Liste des programmes de garde
                       </h3>
                     </div>
                     <div
-                  class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center"
-                >
+                  class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
                   <div class="py-6 px-3 mt-32 sm:mt-0">
                     <a href="{{ route('programmes.create') }}"
-                      class="bg-emerald-500 active:bg-emerald-900 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
-
-                    >
+                      class="bg-emerald-500 active:bg-emerald-900 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" >
                     <i class="fas fa-plus mr-1 "></i> Ajouter
                     </a>
                   </div>

@@ -205,70 +205,106 @@
                     </button>
                   </div>
                 </div>
-                <div class="w-full lg:w-4/12 px-4 lg:order-1">
-                  <div class="flex justify-center py-4 lg:pt-4 pt-8">
-                    <div class="mr-4 p-3 text-center">
-                      <span
-                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
-                        >22</span
-                      ><span class="text-sm text-blueGray-400">Friends</span>
-                    </div>
-                    <div class="mr-4 p-3 text-center">
-                      <span
-                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
-                        >10</span
-                      ><span class="text-sm text-blueGray-400">Photos</span>
-                    </div>
-                    <div class="lg:mr-4 p-3 text-center">
-                      <span
-                        class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"
-                        >89</span
-                      ><span class="text-sm text-blueGray-400">Comments</span>
-                    </div>
-                  </div>
-                </div>
+
+
               </div>
-              <div class="text-center mt-12">
-                <h3
-                  class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2"
-                >
-                  Jenna Stones
-                </h3>
-                <div
-                  class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase"
-                >
-                  <i
-                    class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"
-                  ></i>
-                  Los Angeles, California
+
+
+              <div class="block w-full overflow-x-auto">
+                  <!-- Projects table -->
+                  <table
+                    class="items-center w-full bg-transparent border-collapse"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        >
+                          Code
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        >
+                          ville
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        >
+                          par
+                        </th>
+
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        >
+                          le
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        >
+                          Status
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        >
+                        Telecharger
+                        </th>
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        >
+
+                          Date de publication
+                        </th>
+
+                        <th
+                          class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                        ></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($downloadsPerUser as $user)
+                      <tr>
+                        <th
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
+                        >
+
+                          <span class="ml-3 font-bold text-blueGray-600">
+                          {{ $user->name }}
+                          </span>
+                        </th>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+
+
+                          <div class="flex">
+                          {{ $user->total }}
+        </div>
+
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                        <ul>
+
+                            </ul>
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          <div class="flex">
+                          
+                          </div>
+                        </td>
+
+
+
+
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
                 </div>
-                <div class="mb-2 text-blueGray-600 mt-10">
-                  <i class="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i
-                  >Solution Manager - Creative Tim Officer
-                </div>
-                <div class="mb-2 text-blueGray-600">
-                  <i
-                    class="fas fa-university mr-2 text-lg text-blueGray-400"
-                  ></i
-                  >University of Computer Science
-                </div>
-              </div>
-              <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
-                <div class="flex flex-wrap justify-center">
-                  <div class="w-full lg:w-9/12 px-4">
-                    <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
-                      An artist of considerable range, Jenna the name taken by
-                      Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                      performs and records all of his own music, giving it a
-                      warm, intimate feel with a solid groove structure. An
-                      artist of considerable range.
-                    </p>
-                    <a href="#pablo" class="font-normal text-pink-500"
-                      >Show more</a
-                    >
-                  </div>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>
@@ -300,7 +336,7 @@
                   class="relative w-full px-4 max-w-full flex-grow flex-1"
                 >
                   <h3 class="font-semibold text-lg text-blueGray-700">
-                  Liste des programmes de garde
+                  Liste des de garde
                   </h3>
                 </div>
                 <div
