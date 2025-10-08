@@ -11,7 +11,7 @@
             <a
               class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
               href="{{ route('apres.ville', ['ville' => Auth::user()->ville_id]) }}"
-              >Dashboard</a
+              >Tableau de board</a
             >
 
             <ul
@@ -38,14 +38,14 @@
               >
               @can("admin")
 
-             
+
 
                 <a
                   href="{{route('programmes.index')}}"
                   class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
                   >Les Programmes</a
                 >
-                <a
+                <!-- <a
                   href="{{route('programmes.para')}}"
                   class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
                   >Les Pros</a
@@ -54,7 +54,7 @@
     href="{{route('programmes.search')}}"
     class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
     >Recherche</a
-  >
+  > -->
 
 
 

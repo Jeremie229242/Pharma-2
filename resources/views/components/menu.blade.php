@@ -7,7 +7,7 @@
             class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             href="{{ route('apres.ville', ['ville' => Auth::user()->ville_id]) }}"
           >
-            Notus Tailwind JS
+            PRO-PHARMA
           </a>
           <ul class="md:hidden items-center flex flex-wrap list-none">
 
@@ -31,14 +31,14 @@
               >
               @can("admin")
 
-              
+
 
   <a
     href="{{route('programmes.index')}}"
     class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
     >Les Programmes</a
   >
-  <a
+  <!-- <a
                   href="{{route('programmes.para')}}"
                   class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
                   >Les Pros</a
@@ -47,12 +47,17 @@
     href="{{route('programmes.search')}}"
     class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
     >Recherche</a
-  >
+  > -->
 
 
 
   @endcan
 
+  <a
+    href="{{route('profile.edit')}}"
+    class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+    >.</a
+  >
   <a
     href="{{route('profile.edit')}}"
     class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
@@ -82,9 +87,9 @@
                 <div class="w-6/12">
                   <a
                     class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                    href="../../index.html"
+                    href="{{ route('apres.ville', ['ville' => Auth::user()->ville_id]) }}"
                   >
-                    Notus Tailwind JS
+                    PRO-PHARMA
                   </a>
                 </div>
                 <div class="w-6/12 flex justify-end">
@@ -98,67 +103,33 @@
                 </div>
               </div>
             </div>
-            <form class="mt-6 mb-4 md:hidden">
-              <div class="mb-3 pt-0">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  class="border-0 px-3 py-2 h-12 border border-solid border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
-                />
-              </div>
-            </form>
+
             <!-- Divider -->
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
             <h6
               class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
             >
-              Admin Layout Pages
+            {{Auth::user()->name}}
             </h6>
             <!-- Navigation -->
 
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
               <li class="items-center">
                 <a
-                  href="./dashboard.html"
+                  href="{{ route('apres.ville', ['ville' => Auth::user()->ville_id]) }}"
                   class="text-xs uppercase py-3 font-bold block text-emerald-500 hover:text-emerald-800"
                 >
                   <i class="fas fa-tv mr-2 text-sm opacity-75"></i>
-                  Dashboard
+                  Tableau de board
                 </a>
               </li>
 
-              <li class="items-center">
-                <a
-                  href="./settings.html"
-                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                >
-                  <i class="fas fa-tools mr-2 text-sm text-blueGray-300"></i>
-                  Settings
-                </a>
-              </li>
 
-              <li class="items-center">
-                <a
-                  href="./tables.html"
-                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                >
-                  <i class="fas fa-table mr-2 text-sm text-blueGray-300"></i>
-                  Tables
-                </a>
-              </li>
 
-              <li class="items-center">
-                <a
-                  href="./maps.html"
-                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                >
-                  <i
-                    class="fas fa-map-marked mr-2 text-sm text-blueGray-300"
-                  ></i>
-                  Maps
-                </a>
-              </li>
+
+
+
             </ul>
 
 
