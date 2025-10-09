@@ -40,6 +40,10 @@ public function store(LoginRequest $request): RedirectResponse
 
         $user = Auth::user();
 
+        $user->update([
+            'last_login_at' => now(),
+        ]);
+
         // 🔒 Vérifier que l'utilisateur a validé son OTP
         if (! $user->is_verified) {
             Auth::logout();
@@ -66,6 +70,8 @@ public function store(LoginRequest $request): RedirectResponse
         return redirect()->back();
     }
 }
+
+
 
 
 

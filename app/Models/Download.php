@@ -26,10 +26,15 @@ class Download extends Model
 
      'ville_id',
       'user_id',
-
+'total_downloads',
        'downloaded_at'
     ];
     protected $casts = [
         'downloaded_at' => 'datetime',
     ];
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 }

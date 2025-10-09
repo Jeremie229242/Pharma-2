@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Programe;
+use App\Models\User;
 use App\Models\Ville;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +39,11 @@ $downloadsByMonth = DB::table('downloads')
 ->orderBy('month')
 ->pluck('total', 'month');
 
+
+$users = User::where('ville_id', $villeId)
+->withCount('downloads')
+->get();
+
     // ✅ Récupérer uniquement le dernier programme publié dans la ville de l'utilisateur
     $programme = Programe::where('ville_id', $villeId)
         ->where('is_publish', true)
@@ -45,8 +51,8 @@ $downloadsByMonth = DB::table('downloads')
         ->first();
 
     $ville = Ville::findOrFail($villeId);
-    
-    return view('apres.ville', compact('ville','programme', 'downloadsPerUser','downloadsByMonth'));
+
+    return view('apres.ville', compact('ville','programme', 'downloadsPerUser','downloadsByMonth', 'users'));
 }
 
 public function inf($villeId)

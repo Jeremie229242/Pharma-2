@@ -261,7 +261,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                    @foreach($downloadsPerUser as $user)
+                    @foreach($users as $user)
                       <tr>
                         <th
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
@@ -277,7 +277,7 @@
 
 
                           <div class="flex">
-                          {{ $user->total }}
+                          {{ $user->downloads_count }}
         </div>
 
                         </td>
@@ -285,14 +285,14 @@
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                         <ul>
-
+                        {{ $user->created_at->format('d/m/Y') }}
                             </ul>
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           <div class="flex">
-                          
+                          {{ $user->last_login_at ? $user->last_login_at->format('d/m/Y H:i') : 'Jamais' }}
                           </div>
                         </td>
 

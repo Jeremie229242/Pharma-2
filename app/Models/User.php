@@ -29,7 +29,8 @@ class User extends Authenticatable
         'is_verified',
         'image',
         'otp_sent_at',
-        'ville_id'
+        'ville_id',
+        'last_login_at',
     ];
 
     /**
@@ -51,11 +52,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
 'otp_expires_at' => 'datetime',
     'otp_sent_at' => 'datetime',
+    'last_login_at' => 'datetime',
     ];
 
     public function ville()
     {
         return $this->belongsTo(Ville::class, 'ville_id');
+    }
+    public function downloads()
+    {
+        return $this->hasMany(Download::class, 'user_id', 'id');
     }
 
 }
